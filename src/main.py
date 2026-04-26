@@ -29,28 +29,29 @@ class Shrimp():
         self.sprite = sprite_string
         self.position_x = 0
         self.position_y = 0
-        
+
+
+    def get_reversed_line(self, line: str) -> str:
+        new_line = ""
+        for char in line:
+            if char == r"/":
+                new_line += "\\"
+            elif char == "\\":
+                new_line += r"/"
+            elif char == r"}":
+                new_line += r"{"
+            else:
+                new_line += char
+        return new_line[::-1]
+
+
     def print_at(self, x: int, y: int, wait: float = 0.3, reverse: bool = False) -> None:
         print(term.clear, end='')
-        if reverse:
-            for line in self.sprite.splitlines():
-                new_line = ""
-                for char in line:
-                    if char == r"/":
-                        new_line += "\\"
-                    elif char == "\\":
-                        new_line += r"/"
-                    elif char == r"}":
-                        new_line += r"{"
-                    else:
-                        new_line += char
-                    
-                print(term.move_xy(x, y), ' '*x + new_line[::-1], end=' ')
-                y += 1
-        else:
-            for line in self.sprite.splitlines():
-                print(term.move_xy(x, y), ' '*x + line, end='')
-                y += 1
+        for line in self.sprite.splitlines():
+            if reverse:
+                line = self.get_reversed_line(line)
+            print(term.move_xy(x, y), ' '*x + line, end=' ')
+            y += 1
         print(sleep(wait))
         
 
