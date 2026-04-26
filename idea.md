@@ -15,3 +15,8 @@ Additional ideas:
 - [ ] Creature statistics are displayed in the terminal
 - [ ] Creature can say things using a LLM running locally
 - [ ] Creature has more complex moving pattern (not only in straight lines)
+
+
+
+TODO:
+- [ ] funkcja która 

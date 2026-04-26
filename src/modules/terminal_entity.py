@@ -2,14 +2,10 @@ from time import sleep
 from blessed import Terminal
 
 
-class Shrimp():
-    def __init__(self, term: Terminal, sprite_string: str) -> None:
+class TerminalEntity():
+    def __init__(self, term: Terminal, sprite: str) -> None:
         self.term = term
-        self.sprite = sprite_string
-        self.position_x = 0
-        self.position_y = 0
-        self.terminal_x = term.width
-        self.terminal_y = term.height
+        self.sprite = sprite
 
     def get_reversed_line(self, line: str) -> str:
         new_line = ""
@@ -24,19 +20,18 @@ class Shrimp():
                 new_line += char
         return new_line[::-1]
 
-    def print_at(self, x: int, y: int, wait: float = 0.3, reverse: bool = False) -> None:
+    def print_at(self, x: int, y: int, wait: float = 0, reverse: bool = False) -> None:
         self.position_x = x
         self.position_y = y
-        print(self.term.clear, end='')
         for line in self.sprite.splitlines():
             if reverse:
                 line = self.get_reversed_line(line)
-            print(self.term.move_xy(x, y), ' '*x + line, end=' ')
+            print(self.term.move_xy(x, y), line, end=' ')
             y += 1
         sleep(wait)
         print('')
 
-    def move_to(self, x: int, y: int, wait: float = 0.3, reverse: bool = False) -> None:
+    def move_to(self, x: int, y: int, wait: float = 0, reverse: bool = False) -> None:
         self.print_at(self.position_x + x,
                       self.position_y + y,
                       wait,
@@ -44,7 +39,7 @@ class Shrimp():
     
     def go_to(self, x1: int, y1: int, time: float = 1) -> None:
         """
-        Make a shrimp go to a specified place in specified time in straight line.
+        Make an entity go to a specified place in specified time in straight line.
         """
         x0 = self.position_x
         y0 = self.position_y
