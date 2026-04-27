@@ -2,10 +2,42 @@ from time import sleep
 from blessed import Terminal
 
 
+
+# class Printer():
+#     def __init__(self, term: Terminal) -> None:
+#         self.term = term
+#         self.entities = []
+
+#     def add_entity(self, entity):
+#         self.entities.append(entity)
+    
+#     def remove_entity(self, the_entity):
+#         new_list = []
+#         for entity in self.entities:
+#             if entity is not the_entity:
+#                 new_list.append(entity)
+#         self.entities = new_list
+    
+#     def print_all(self, fps: int):
+#         print(self.term.clear, end='')
+#         for entity in self.entities:
+#             entity.print()
+#         sleep(1/fps)
+
+
+
 class TerminalEntity():
     def __init__(self, term: Terminal, sprite: str) -> None:
         self.term = term
         self.sprite = sprite
+        self.reversed = False
+        self.moving = False
+    
+    def update_position_x(self, x: int):
+        self.position_x = x
+    
+    def update_position_y(self, y: int):
+        self.position_y = y
 
     def get_reversed_line(self, line: str) -> str:
         new_line = ""
@@ -19,6 +51,23 @@ class TerminalEntity():
             else:
                 new_line += char
         return new_line[::-1]
+
+
+    def print(self):
+        x = self.position_x
+        y = self.position_y
+        for line in self.sprite.splitlines():
+            if self.reversed:
+                line = self.get_reversed_line(line)
+            print(self.term.move_xy(x, y), line, end=' ')
+            y += 1
+    
+
+    def move(self, x1: int, y1: int, time: int):
+        if not self.moving:
+            self.moving = True
+
+
 
     def print_at(self, x: int, y: int, wait: float = 0, reverse: bool = False) -> None:
         self.position_x = x
