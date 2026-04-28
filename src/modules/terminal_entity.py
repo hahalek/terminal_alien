@@ -1,4 +1,5 @@
-from math import cos, sin, atan
+import logging
+from math import sqrt, pow
 from time import sleep
 from blessed import Terminal
 from GLOBALS import FPS
@@ -84,22 +85,42 @@ class TerminalEntity():
 
     def move(self):
         if not self.at_target:
-            if self.target_x - self.x0 != 0:
-                dx = self.speed * cos(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
-                dy = self.speed * sin(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
-            else:
-                dx = 0
-                dy = 0
+            # dx = 0
+            # dy = 0
+            # if self.target_x - self.x0 != 0:
+            #     dx = self.speed * cos(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
+            # if self.target_y - self.y0 != 0:
+            #     dy = self.speed * sin(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
+            
             if self.target_x >= self.position_x:
-                self.position_x += dx
                 self.active_sprite = self.sprite_right
             else:
-                self.position_x -= dx
                 self.active_sprite = self.sprite_left
-            if self.target_y >= self.position_y:
-                self.position_y += dy
-            else:
-                self.position_y -= dy
+            dx = self.target_x - self.x0
+            dy = self.target_y - self.y0
+            L = sqrt(pow((dx), 2) + pow(dy, 2))
+            self.position_x += self.speed * dx/L * 1/FPS
+            self.position_y += self.speed * dy/L * 1/FPS
+            
+            self.position_x = max(0, self.position_x)
+            self.position_y = max(0, self.position_y)
+
+            self.position_x = min(self.position_x, self.term.width - len(self.sprite_right.splitlines()[0])-2)
+            self.position_y = min (self.position_y, self.term.height - len(self.sprite_right.splitlines())-2)
+
+            logging.info(f"y0 = {self.y0}, target y = {self.target_y}, dy = {self.speed * dy/L * 1/FPS}")
+            # if self.target_x >= self.position_x:
+            #     self.position_x += dx
+            #     self.active_sprite = self.sprite_right
+            # else:
+            #     self.position_x -= dx
+            #     self.active_sprite = self.sprite_left
+            # if self.target_y >= self.position_y:
+            #     self.position_y += dy
+            #     logging.info(f"dy = +{dy}")
+            # else:
+            #     self.position_y -= dy
+            #     logging.info(f"dy = -{dy}")
             if abs(self.position_x - self.target_x) < 1:
                 self.at_target = True
 
