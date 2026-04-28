@@ -19,4 +19,4 @@ Additional ideas:
 
 
 TODO:
-- [ ] funkcja która 
+- [ ] bugfix: krewetka nie porusza się w ujemną stronę (prawdopodobnie coś z kątem)

@@ -4,6 +4,7 @@ from blessed import Terminal
 from modules.shrimp import Shrimp
 from modules.sprites import shrimp_sprite, plant_sprite
 from modules.terminal_entity import TerminalEntity
+from GLOBALS import FPS
 
 
 term = Terminal()
@@ -17,6 +18,7 @@ class Printer():
 
     def update_char_at(self, x: int, y: int, char: str):
         lines = self.display.splitlines()
+        # print(f"{__file__} display lanes = {len(lines)}")
         line = lines[y]
         lines[y] = line[:x] + char + line[x + 1:]
         self.display = '\n'.join(lines)
@@ -31,7 +33,7 @@ class Printer():
     def update_entity(self, entity: TerminalEntity):
         x = entity.position_x
         y = entity.position_y
-        sprite_lines = entity.sprite.splitlines()
+        sprite_lines = entity.active_sprite.splitlines()
         for line in sprite_lines:
             for char in line:
                 if char == ' ':
@@ -48,10 +50,15 @@ class Printer():
     
 
 printer = Printer(term)
-shrimp1 = TerminalEntity(term, shrimp_sprite)
-# shrimp2 = TerminalEntity(term, shrimp_sprite)
-plant = TerminalEntity(term, plant_sprite)
-entities = [plant, shrimp1]
+shrimp1 = Shrimp(term, shrimp_sprite)
+shrimp2 = Shrimp(term, shrimp_sprite)
+shrimp3 = Shrimp(term, shrimp_sprite)
+
+plant1 = TerminalEntity(term, plant_sprite)
+plant2 = TerminalEntity(term, plant_sprite)
+
+shrimps = [shrimp1, shrimp2, shrimp3]
+entities = [plant1, plant2] + shrimps
 
 # printer.update_char_at(5, 29, 'G')
 # printer.update_char_at(6, 29, 'o')
@@ -60,18 +67,26 @@ entities = [plant, shrimp1]
 # printer.update_char_at(9, 29, 'o')
 
 
-shrimp1.update_position_xy(2, 2)
-# shrimp2.update_position_xy(43, 23)
-plant.update_position_xy(4, 4)
-shrimp1.set_target_xy(30, 20)
+shrimp1.update_position_xy(3, 2)
+shrimp2.update_position_xy(23, 5)
+shrimp3.update_position_xy(13, 2)
+plant1.update_position_xy(15, 1)
+plant2.update_position_xy(5, 1)
+# shrimp1.set_target_xy(10, 20)
+
+
 
 while True:
     printer.clear()
+    for shrimp in shrimps:
+        shrimp.decide_on_target(uniform(0.1,  20))
+
+
     for entity in entities:
         entity.move()
     printer.update_all(entities)
     printer.print()
-    sleep(1/60)
+    sleep(1/FPS)
 
 # shrimp = Shrimp(term, shrimp_sprite)
 # plant = TerminalEntity(term, plant_sprite)

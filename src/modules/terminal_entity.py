@@ -1,7 +1,7 @@
 from math import cos, sin, atan
 from time import sleep
 from blessed import Terminal
-
+from GLOBALS import FPS
 
 
 # class Printer():
@@ -30,26 +30,17 @@ from blessed import Terminal
 class TerminalEntity():
     def __init__(self, term: Terminal, sprite: str) -> None:
         self.term = term
-        self.sprite = sprite
+        self.active_sprite = sprite
+        self.sprite_right = sprite
+        self.sprite_left = self.turn_sprite_left()
         self.position_x = 0
         self.position_y = 0
         self.x0 = 0
         self.y0 = 0
         self.target_x = 0
         self.target_y = 0
-        self.speed = 8
-        self.reversed = False
+        self.speed = 4
         self.at_target = True
-    
-    def update_position_x(self, x: int):
-        self.position_x = x
-    
-    def update_position_y(self, y: int):
-        self.position_y = y
-
-    def update_position_xy(self, x: int, y: int):
-        self.position_x = x
-        self.position_y = y
 
     def get_reversed_line(self, line: str) -> str:
         new_line = ""
@@ -64,6 +55,23 @@ class TerminalEntity():
                 new_line += char
         return new_line[::-1]
 
+    def turn_sprite_left(self):
+        sprite_left = ''
+        for line in self.sprite_right.splitlines():
+            sprite_left += self.get_reversed_line(line) + "\n"
+        return sprite_left
+
+    
+    def update_position_x(self, x: int):
+        self.position_x = x
+    
+    def update_position_y(self, y: int):
+        self.position_y = y
+
+    def update_position_xy(self, x: int, y: int):
+        self.position_x = x
+        self.position_y = y
+
     def set_target_xy(self, x: int, y: int):
         self.target_x = x
         self.target_y = y
@@ -76,11 +84,26 @@ class TerminalEntity():
 
     def move(self):
         if not self.at_target:
-            FPS = 60
-            self.position_x += self.speed * cos(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
-            self.position_y += self.speed * sin(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
+            if self.target_x - self.x0 != 0:
+                dx = self.speed * cos(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
+                dy = self.speed * sin(atan((self.target_y - self.y0)/(self.target_x - self.x0))) * 1/FPS
+            else:
+                dx = 0
+                dy = 0
+            if self.target_x >= self.position_x:
+                self.position_x += dx
+                self.active_sprite = self.sprite_right
+            else:
+                self.position_x -= dx
+                self.active_sprite = self.sprite_left
+            if self.target_y >= self.position_y:
+                self.position_y += dy
+            else:
+                self.position_y -= dy
             if abs(self.position_x - self.target_x) < 1:
                 self.at_target = True
+
+
         
 
 
