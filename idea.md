@@ -19,4 +19,9 @@ Additional ideas:
 
 
 TODO:
-- [ ] bugfix: krewetka nie porusza się w ujemną stronę (prawdopodobnie coś z kątem)
+- [x] bugfix: krewetka nie porusza się w ujemną stronę (prawdopodobnie coś z kątem)
+- [ ] feature -> akwarium losowo initializowane roślinkami i rybkami (losowa ilość w losowych miejscach)
+- [ ] feature -> animowane sprity (przede wszystkim roślinek)
+- [ ] feature -> bąbelki płynące z dołu do góry i znikające poza ekranem ładnie
+- [ ] feature -> opakowanie projektu w CLI tool który można zainstalować i odpalić w terminalu
+- [ ] feature -> możliwość wrzucenia jedzonka i żeby rybki które są najbliżej płynęły z losową prędkością je zjeść
