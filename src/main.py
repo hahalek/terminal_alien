@@ -30,7 +30,7 @@ fish = Shrimp(term, fish_sprite)
 plant1 = TerminalEntity(term, plant_sprite)
 plant2 = TerminalEntity(term, plant_sprite)
 
-shrimps = [shrimp1, shrimp2, shrimp3, fish]
+animals = [shrimp1, shrimp2, shrimp3, fish]
 entities = [plant1, plant2, shrimp1, shrimp2, shrimp3, fish]
 
 
@@ -40,6 +40,7 @@ shrimp3.update_position_xy(13, 30)
 fish.update_position_xy(70, 30)
 plant1.update_position_xy(15, 26)
 plant2.update_position_xy(150, 22)
+foods = []
 
 
 # print(term.does_mouse())
@@ -53,17 +54,26 @@ plant2.update_position_xy(150, 22)
 
 while True:
     printer.clear()
-    for shrimp in shrimps:
-        logging.info(f"{shrimp.position_y} --> {shrimp.target_y}")
-        shrimp.decide_on_target(timer = uniform(0.1,  20))
+    for animal in animals:
+        logging.info(f"{animal.position_y} --> {animal.target_y}")
+        animal.decide_on_target(timer = uniform(0.1,  20))
 
     with term.cbreak():
         key = term.inkey(timeout=1/FPS)
         if key == ' ':
             food = Food(term, food_sprite)
             entities.append(food)
+            foods.append(food)
 
 
+
+    for animal in animals:
+        if foods:
+            animal.set_target_xy(foods[0].position_x, foods[0].position_y)
+            if animal.get_position_int() == foods[0].get_position_int():
+                food = foods[0]
+                entities.remove(food)
+                del foods[0]
     for entity in entities:
         entity.move()
     printer.update_all(entities)
