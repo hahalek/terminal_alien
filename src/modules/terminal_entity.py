@@ -1,6 +1,5 @@
 import logging
 from math import sqrt, pow
-from time import sleep
 from blessed import Terminal
 from GLOBALS import FPS
 
@@ -78,10 +77,10 @@ class TerminalEntity():
             self.position_x = max(0, self.position_x)
             self.position_y = max(0, self.position_y)
 
-            self.position_x = min(self.position_x, self.term.width - len(self.sprite_right.splitlines()[0])-4)
-            self.position_y = min (self.position_y, self.term.height - len(self.sprite_right.splitlines())-2)
+            self.position_x = min(self.position_x, self.term.width - len(self.sprite_right.splitlines()[0])-10)
+            self.position_y = min(self.position_y, self.term.height - len(self.sprite_right.splitlines())-2)
 
             logging.info(f"y0 = {self.y0}, target y = {self.target_y}, dy = {self.speed * dy/L * 1/FPS}")
 
-            if abs(self.position_x - self.target_x) < 1:
+            if abs(self.position_y - self.target_y) < 1:
                 self.at_target = True
