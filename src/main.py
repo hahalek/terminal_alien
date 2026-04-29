@@ -54,9 +54,9 @@ foods = []
 
 while True:
     printer.clear()
-    for animal in animals:
-        logging.info(f"{animal.position_y} --> {animal.target_y}")
-        animal.decide_on_target(timer = uniform(0.1,  20))
+    # for animal in animals:
+    #     logging.info(f"{animal.position_y} --> {animal.target_y}")
+    #     animal.decide_on_target(timer = uniform(0.1,  20))
 
     with term.cbreak():
         key = term.inkey(timeout=1/FPS)
@@ -65,15 +65,25 @@ while True:
             entities.append(food)
             foods.append(food)
 
-
-
     for animal in animals:
         if foods:
-            animal.set_target_xy(foods[0].position_x, foods[0].position_y)
-            if animal.get_position_int() == foods[0].get_position_int():
-                food = foods[0]
-                entities.remove(food)
-                del foods[0]
+            for food in foods:
+                if animal.detecting_food(food):
+                    animal.set_target_xy(food.position_x, food.position_y)
+                if animal.get_position_int() == food.get_position_int():
+                    logging.info(f"food to delete: {food}")
+                    logging.info(f"Deleting from: {entities}")
+                    if food in entities:
+                        animal.chasing_food = False
+                        entities.remove(food)
+                        foods.remove(food)
+                        del food
+        else:
+            animal.chasing_food = False
+
+    for animal in animals:
+        if animal.chasing_food == False:
+            animal.decide_on_target(timer = uniform(0.1,  20))
     for entity in entities:
         entity.move()
     printer.update_all(entities)
