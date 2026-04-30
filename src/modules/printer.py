@@ -26,10 +26,9 @@ class Printer():
     def clear(self):
         self.display = self.empty
 
-
     def update_entity(self, entity: TerminalEntity):
-        x = entity.position_x
         y = entity.position_y
+        x = entity.position_x
         sprite_lines = entity.active_sprite.splitlines()
         for line in sprite_lines:
             for char in line:

@@ -10,7 +10,7 @@ class Shrimp(TerminalEntity):
     def __init__(self, term: Terminal, sprite: str) -> None:
         super().__init__(term, sprite)
         self.has_target = False
-        self.target_timer = 0
+        self.target_timer = float("+inf")
         self.chasing_food = False
     
     def decide_on_target(self, timer: float):
@@ -18,16 +18,17 @@ class Shrimp(TerminalEntity):
             self.target_timer += 1/FPS
         else:
             self.target_timer = 0
-            x = randint(0, self.term.width - len(self.sprite_right.splitlines()[0])-2)
-            y = randint(0, self.term.height - len(self.sprite_right.splitlines())-2)
-            logging.info(f"NEW TARGET = {y}")
-            self.speed = uniform(0.01, 30)
+            x = randint(0, self.term.width - self.sprite_width-2)
+            y = randint(0, self.term.height - self.sprite_height-2)
+            logging.info(f"position = {self.position_x, self.position_y}, to_right = {self.turned_right}")
+            logging.info(f"NEW TARGET = {x, y}")
+            self.speed = 8 # uniform(0.01, 5)
             self.set_target_xy(x, y)
             self.target_timer += 1/FPS
     
     def detecting_food(self, food: Food):
-        if abs(self.position_x - food.position_x) < 40 and abs(self.position_y - food.position_y) < 15:
-            self.speed = 40
+        if min(abs(self.position_x - food.position_x), abs(self.position_x + self.sprite_width - food.position_x)) < 60 and abs(self.position_y - food.position_y) < 15:
+            self.speed = uniform(30, 50)
             self.chasing_food = True
             return True
         self.chasing_food = False
