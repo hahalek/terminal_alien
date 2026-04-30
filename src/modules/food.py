@@ -12,7 +12,7 @@ class Food(TerminalEntity):
         self.set_target_xy(int(self.position_x), term.height-15)
     
     def spawn(self):
-        x = randint(0, self.term.width - self.sprite_width-25)
+        x = randint(10, self.term.width - self.sprite_width-25)
         y = randint(0, 5)
         self.update_position_xy(x, y)
     

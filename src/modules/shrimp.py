@@ -22,13 +22,13 @@ class Shrimp(TerminalEntity):
             y = randint(0, self.term.height - self.sprite_height-2)
             logging.info(f"position = {self.position_x, self.position_y}, to_right = {self.turned_right}")
             logging.info(f"NEW TARGET = {x, y}")
-            self.speed = 8 # uniform(0.01, 5)
+            self.speed = uniform(0.01, 10)
             self.set_target_xy(x, y)
             self.target_timer += 1/FPS
     
     def detecting_food(self, food: Food):
         if min(abs(self.position_x - food.position_x), abs(self.position_x + self.sprite_width - food.position_x)) < 60 and abs(self.position_y - food.position_y) < 15:
-            self.speed = uniform(30, 50)
+            self.speed = 50
             self.chasing_food = True
             return True
         self.chasing_food = False

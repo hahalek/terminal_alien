@@ -30,8 +30,8 @@ fish = Shrimp(term, fish_sprite)
 plant1 = TerminalEntity(term, plant_sprite)
 plant2 = TerminalEntity(term, plant_sprite)
 
-animals = [fish]
-entities = [fish]
+animals = [shrimp1, shrimp2, shrimp3, fish]
+entities = [plant1, plant2, shrimp1, shrimp2, shrimp3, fish]
 
 
 shrimp1.update_position_xy(0, 0)
@@ -68,20 +68,21 @@ while True:
                         entities.remove(food)
                         foods.remove(food)
                         del food
+                        animal.speed = uniform(0.01, 10)
         else:
             animal.chasing_food = False
 
     for animal in animals:
         if animal.chasing_food == False:
-            animal.decide_on_target(timer = uniform(6,  20))
+            animal.decide_on_target(timer = uniform(0.1,  20))
     for entity in entities:
         entity.move()
 
     printer.update_all(entities)
-    for animal in animals:
-        printer.update_char_at(int(animal.position_x), int(animal.position_y), 'v')
-        printer.update_char_at(int(animal.head_x), int(animal.position_y), 'X')
-        printer.update_char_at(int(animal.target_x), int(animal.target_y), 'T')
-        printer.update_char_at(int(animal.x0), int(animal.y0), 's')
+    # for animal in animals:
+        # printer.update_char_at(int(animal.position_x), int(animal.position_y), 'v')
+        # printer.update_char_at(int(animal.head_x), int(animal.position_y), 'X')
+        # printer.update_char_at(int(animal.target_x), int(animal.target_y), 'T')
+        # printer.update_char_at(int(animal.x0), int(animal.y0), 's')
 
     printer.print()

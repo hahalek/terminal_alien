@@ -100,8 +100,16 @@ class TerminalEntity():
             dx = self.target_x - self.x0
             dy = self.target_y - self.y0
             L = sqrt(pow((dx), 2) + pow(dy, 2))
-            self.position_x += self.speed * dx/L * 1/FPS
-            self.position_y += self.speed * dy/L * 1/FPS
+            Dx = self.speed * dx/L * 1/FPS
+            Dy = self.speed * dy/L * 1/FPS
+
+            if Dx > 0:
+                self.active_sprite = self.sprite_right
+            if Dx < 0:
+                self.active_sprite = self.sprite_left
+
+            self.position_x += Dx
+            self.position_y += Dy
             
             self.position_x = max(0, self.position_x)
             self.position_y = max(0, self.position_y)
