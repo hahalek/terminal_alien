@@ -1,4 +1,3 @@
-import logging
 from random import randint, uniform
 from blessed import Terminal
 from .terminal_entity import TerminalEntity
@@ -20,8 +19,6 @@ class Shrimp(TerminalEntity):
             self.target_timer = 0
             x = randint(0, self.term.width - self.sprite_width-2)
             y = randint(0, self.term.height - self.sprite_height-2)
-            logging.info(f"position = {self.position_x, self.position_y}, to_right = {self.turned_right}")
-            logging.info(f"NEW TARGET = {x, y}")
             self.speed = uniform(0.01, 10)
             self.set_target_xy(x, y)
             self.target_timer += 1/FPS

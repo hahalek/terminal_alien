@@ -3,7 +3,6 @@ from random import randint
 from .terminal_entity import TerminalEntity
 
 
-
 class Food(TerminalEntity):
     def __init__(self, term: Terminal, sprite: str) -> None:
         super().__init__(term, sprite)

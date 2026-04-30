@@ -1,4 +1,3 @@
-import logging
 from math import sqrt, pow
 from blessed import Terminal
 from GLOBALS import FPS
@@ -22,8 +21,6 @@ class TerminalEntity():
         self.speed = 4
         self.at_target = True
         self.turned_right = True
-        logging.info(f"sprite dimentions: {self.sprite_width}, {self.sprite_height}")
-        logging.info(f"entity position: {self.position_x}, {self.position_y}")
 
     def get_reversed_line(self, line: str) -> str:
         new_line = ""
@@ -80,12 +77,6 @@ class TerminalEntity():
 
         self.x0 = self.head_x
         self.y0 = self.position_y
-        logging.info(f"x0, y0 zaraz po przypisaniu: {self.x0, self.y0}")
-        logging.info(f"position zaraz po przypisaniu: {self.position_x, self.position_y}")
-        logging.info(f"head zaraz po przypisaniu: {self.head_x, self.position_y}")
-        logging.info(f"target zaraz po przypisaniu: {self.target_x, self.target_y}")
-        logging.info(f" ")
-
         self.at_target = False
 
     def set_speed(self, speed: float):
@@ -93,10 +84,6 @@ class TerminalEntity():
 
     def move(self):
         if not self.at_target:            
-            # if self.target_x >= self.position_x:
-            #     self.active_sprite = self.sprite_right
-            # else:
-            #     self.active_sprite = self.sprite_left
             dx = self.target_x - self.x0
             dy = self.target_y - self.y0
             L = sqrt(pow((dx), 2) + pow(dy, 2))
@@ -120,8 +107,6 @@ class TerminalEntity():
                 self.head_x = self.position_x + self.sprite_width
             else:
                 self.head_x = self.position_x
-            logging.info(f"head_x = {self.head_x}")
-            logging.info(f"x0, y0 = {self.x0, self.y0}, target = {self.target_x, self.target_y}, dx, dy = {self.speed * dx/L * 1/FPS, self.speed * dy/L * 1/FPS}")
-
+                
             if abs(self.position_y - self.target_y) < 2 and abs(self.head_x - self.target_x) < 2:
                 self.at_target = True

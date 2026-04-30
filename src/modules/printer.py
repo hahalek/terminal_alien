@@ -1,11 +1,5 @@
-import logging
-from time import sleep
-from random import uniform
 from blessed import Terminal
-from modules.shrimp import Shrimp
-from modules.sprites import shrimp_sprite, plant_sprite, fish_sprite
 from modules.terminal_entity import TerminalEntity
-from GLOBALS import FPS
 
 
 class Printer():
@@ -32,7 +26,7 @@ class Printer():
         sprite_lines = entity.active_sprite.splitlines()
         for line in sprite_lines:
             for char in line:
-                if char == ' ':
+                if char == ' ' or char == '⠀':
                     x += 1
                 elif char == 'a':
                     self.update_char_at(int(x), int(y), ' ')
